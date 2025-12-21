@@ -1,0 +1,29 @@
+{
+  "gen-service-fun": {
+    "prefix": "gen-service-fun",
+    "body": [
+      "async ${1:functionName}(): Promise<void> {",
+      "  try {",
+      "    return;",
+      "} catch (error) {",
+      "  console.log(`Internal Server Error : ${error.message}`);",
+      "  if (error instanceof BadRequestException) {",
+      "    throw error;",
+      "  }",
+      "  throw new InternalServerErrorException(`Internal Server Error : ${error.message}`);",
+      "}",
+    ],
+    "description": "Generate async service function with error handling",
+  },
+  //ingnore prettier
+  "gen-post": {
+    "prefix": "gen-post",
+    "body": ["//POST::", "@Post()", "async $functionName(@Body() body: Input) {", "  validateInput(Validator.$functionName, body);", "  return this.$functionName(body);", "}"],
+    "description": "Generate POST method with validation",
+  },
+  "gen-get": {
+    "prefix": "gen-get",
+    "body": ["//GET::", "@Get(':id')", "async $functionName(@Param('id') id: string, @Body() body: Input$functionName) {", "  return  await this.Service.$functionName(id);", "}"],
+    "description": "Generate GET method with dynamic function name and parameters",
+  },
+}

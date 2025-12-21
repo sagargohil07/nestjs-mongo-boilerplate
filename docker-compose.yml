@@ -1,0 +1,37 @@
+version: "3.7"
+
+volumes:
+  data-postgres:
+
+services:
+
+  postgres:
+    image: postgres:alpine
+    container_name: "nestjs-boilerplate_postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - data-postgres:/var/lib/postgresql/data
+    environment:
+      - PGDATA=/var/lib/postgresql/data/nestjs-boilerplate
+      - POSTGRES_PASSWORD=nestjs-boilerplate
+      - POSTGRES_USER=nestjs-boilerplate
+      - POSTGRES_DB=nestjs-boilerplate
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${RDB_USER:-nestjs-boilerplate}"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    stdin_open: true
+    tty: true
+  pgadmin:
+    container_name: pgadmin4_container
+    depends_on:
+      - postgres
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
