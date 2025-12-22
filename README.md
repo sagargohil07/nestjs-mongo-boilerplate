@@ -37,10 +37,10 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 4. Run PostgreSQL container:
     ```bash
-    sudo docker run -d --name CryptoBuddy \
-      -e POSTGRES_USER=cryptobuddy \
-      -e POSTGRES_PASSWORD=cryptobuddy \
-      -e POSTGRES_DB=cryptobuddy \
+    sudo docker run -d --name <NAME> \
+      -e POSTGRES_USER=<name> \
+      -e POSTGRES_PASSWORD=<name> \
+      -e POSTGRES_DB=<name> \
       -p 5432:5432 \
       -v /data:/var/lib/postgresql/data \
       postgres:alpine
@@ -48,7 +48,7 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 5. Access PostgreSQL in Docker:
     ```bash
-    sudo docker exec -it CryptoBuddy psql -U cryptobuddy -d cryptobuddy
+    sudo docker exec -it <Name> psql -U <name> -d <name>
     ```
 
 6. Check running containers:
@@ -93,9 +93,9 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
     ssh -T git@github.com
     ```
 
-4. Clone the CryptoBuddy backend repo:
+4. Clone the <repo-name> backend repo:
     ```bash
-    git clone git@github.com:sagargohil07/Crypto-Buddy-Backend.git
+    git clone git@github.com:sagargohil07/<repo-name>.git
     ```
 
 5. Pull latest changes:
@@ -154,7 +154,7 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 1. Navigate to the project folder:
     ```bash
-    cd Crypto-Buddy-Backend/
+    cd Project-Name-Backend/
     ```
 
 2. Install project dependencies:
@@ -203,12 +203,12 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 1. Create NGINX config for your app:
     ```bash
-    sudo nano /etc/nginx/sites-available/cryptobuddyapp
+    sudo nano /etc/nginx/sites-available/project-name
     ```
 
 2. Enable the site:
     ```bash
-    sudo ln -s /etc/nginx/sites-available/cryptobuddyapp /etc/nginx/sites-enabled/
+    sudo ln -s /etc/nginx/sites-available/project-name /etc/nginx/sites-enabled/
     ```
 
 3. Test NGINX configuration:
@@ -223,7 +223,7 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 5. Set up HTTPS using Certbot:
     ```bash
-    sudo certbot --nginx -d cryptobuddyapp.com -d www.cryptobuddyapp.com
+    sudo certbot --nginx -d website.com -d www.website.com
     ```
 
 6. Test Certbot renewal:
@@ -235,18 +235,18 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 1. Create HTML directory:
     ```bash
-    sudo mkdir -p /var/www/cryptobuddyapp/html
+    sudo mkdir -p /var/www/website-name/html
     ```
 
 2. Add HTML files:
     ```bash
-    sudo nano /var/www/cryptobuddyapp/html/index.html
-    sudo nano /var/www/cryptobuddyapp/html/privacy-policy.html
+    sudo nano /var/www/website-name/html/index.html
+    sudo nano /var/www/website-name/html/privacy-policy.html
     ```
 
 3. Set appropriate permissions:
     ```bash
-    sudo chmod -R 755 /var/www/cryptobuddyapp
+    sudo chmod -R 755 /var/www/website-name
     ```
 
 ## 🔁 WebSocket Testing
@@ -258,7 +258,7 @@ This guide will walk you through the process of setting up the CryptoBuddy backe
 
 2. Test WebSocket connection:
     ```bash
-    wscat -c wss://cryptobuddyapp.com/socket.io/?EIO=4&transport=websocket
+    wscat -c wss://website-name.com/socket.io/?EIO=4&transport=websocket
     ```
 
 ---
