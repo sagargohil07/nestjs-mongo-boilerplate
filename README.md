@@ -139,7 +139,7 @@ This guide will walk you through the process of setting up the backend App on a 
 
 6. Start the application using PM2:
     ```bash
-    pm2 start dist/main.js --name crypto-buddy
+    pm2 start dist/main.js --name <project-name>
     ```
 
 7. PM2 commands:
