@@ -1,110 +1,268 @@
-🔧 System Setup
-bash
-CopyEdit
-sudo apt update
-sudo apt upgrade -y
-sudo apt install -y nodejs
-sudo apt install -y docker.io docker-compose
-sudo apt install nginx -y
-sudo apt install certbot python3-certbot-nginx -y
+# Backend Setup Guide
 
-🐳 Docker & PostgreSQL
-bash
-CopyEdit
-sudo systemctl start docker
-sudo usermod -aG docker $USER
-docker --version
-sudo docker run -d --name CryptoBuddy \
-  -e POSTGRES_USER=cryptobuddy \
-  -e POSTGRES_PASSWORD=cryptobuddy \
-  -e POSTGRES_DB=cryptobuddy \
-  -p 5432:5432 \
-  -v /data:/var/lib/postgresql/data \
-  postgres:alpine
-sudo docker exec -it CryptoBuddy psql -U cryptobuddy -d cryptobuddy
-docker ps
+This guide will walk you through the process of setting up the CryptoBuddy backend on a server. It includes system setup, Docker & PostgreSQL setup, Node.js and NPM configuration, project setup, and more.
 
+## 🔧 System Setup
 
-🧵 Swapfile Creation
-bash
-CopyEdit
-sudo fallocate -l 4G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
-free -m
-🌐 SSH & Git Setup
-bash
-CopyEdit
-ssh-keygen -t ed25519 -C "sagarkgohil123@gmail.com"
-cat ~/.ssh/id_ed25519.pub
-ssh -T git@github.com
-git clone git@github.com:sagargohil07/Crypto-Buddy-Backend.git
-git pull --ff origin main
-git reset --hard HEAD && git clean -fd
+1. Update system packages:
+    ```bash
+    sudo apt update
+    sudo apt upgrade -y
+    ```
 
+2. Install dependencies:
+    ```bash
+    sudo apt install -y nodejs
+    sudo apt install -y docker.io docker-compose
+    sudo apt install nginx -y
+    sudo apt install certbot python3-certbot-nginx -y
+    ```
 
-📦 Node.js & NPM Setup
-bash
-CopyEdit
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-node -v
-npm -v
-npm install -g npm
-sudo apt install npm
-npm i
-npm install -g pm2
-pm2 start dist/main.js --name crypto-buddy
-pm2 stop all
-pm2 restart all
-pm2 logs
-pm2 flush
+## 🐳 Docker & PostgreSQL Setup
 
+1. Start Docker service:
+    ```bash
+    sudo systemctl start docker
+    ```
 
-📁 Project Setup
-bash
-CopyEdit
-cd Crypto-Buddy-Backend/
-npm install
-npm run migrate
-npm run dev
+2. Add your user to the Docker group:
+    ```bash
+    sudo usermod -aG docker $USER
+    ```
 
+3. Check Docker version:
+    ```bash
+    docker --version
+    ```
 
-🛠 Sequelize CLI
-bash
-CopyEdit
-npm install --save-dev sequelize-cli
-npx sequelize-cli init
-npx sequelize-cli db:migrate
-npx sequelize-cli db:migrate:undo:all
-npx sequelize-cli db:migrate --config sequelize-cli-config.js
+4. Run PostgreSQL container:
+    ```bash
+    sudo docker run -d --name CryptoBuddy \
+      -e POSTGRES_USER=cryptobuddy \
+      -e POSTGRES_PASSWORD=cryptobuddy \
+      -e POSTGRES_DB=cryptobuddy \
+      -p 5432:5432 \
+      -v /data:/var/lib/postgresql/data \
+      postgres:alpine
+    ```
 
+5. Access PostgreSQL in Docker:
+    ```bash
+    sudo docker exec -it CryptoBuddy psql -U cryptobuddy -d cryptobuddy
+    ```
 
-🌍 NGINX & HTTPS (Certbot)
-bash
-CopyEdit
-sudo nano /etc/nginx/sites-available/cryptobuddyapp
-sudo ln -s /etc/nginx/sites-available/cryptobuddyapp /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-sudo certbot --nginx -d cryptobuddyapp.com -d www.cryptobuddyapp.com
-sudo certbot renew --dry-run
+6. Check running containers:
+    ```bash
+    docker ps
+    ```
 
+## 🧵 Swapfile Creation
 
-📄 HTML Hosting
-bash
-CopyEdit
-sudo mkdir -p /var/www/cryptobuddyapp/html
-sudo nano /var/www/cryptobuddyapp/html/index.html
-sudo nano /var/www/cryptobuddyapp/html/privacy-policy.html
-sudo chmod -R 755 /var/www/cryptobuddyapp
+1. Create swapfile:
+    ```bash
+    sudo fallocate -l 4G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    ```
 
+2. Add swapfile to fstab:
+    ```bash
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    ```
 
-🔁 WebSocket Testing
-bash
-CopyEdit
-npm install -g wscat
-wscat -c wss://cryptobuddyapp.com/socket.io/?EIO=4&transport=websocket
+3. Check memory:
+    ```bash
+    free -m
+    ```
 
+## 🌐 SSH & Git Setup
 
+1. Generate SSH key:
+    ```bash
+    ssh-keygen -t ed25519 -C "your_email@example.com"
+    ```
+
+2. Display the public key:
+    ```bash
+    cat ~/.ssh/id_ed25519.pub
+    ```
+
+3. Test SSH connection to GitHub:
+    ```bash
+    ssh -T git@github.com
+    ```
+
+4. Clone the CryptoBuddy backend repo:
+    ```bash
+    git clone git@github.com:sagargohil07/Crypto-Buddy-Backend.git
+    ```
+
+5. Pull latest changes:
+    ```bash
+    git pull --ff origin main
+    ```
+
+6. Reset repository to the latest commit:
+    ```bash
+    git reset --hard HEAD && git clean -fd
+    ```
+
+## 📦 Node.js & NPM Setup
+
+1. Install Node.js LTS:
+    ```bash
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    ```
+
+2. Check versions:
+    ```bash
+    node -v
+    npm -v
+    ```
+
+3. Install or update npm:
+    ```bash
+    npm install -g npm
+    sudo apt install npm
+    ```
+
+4. Install project dependencies:
+    ```bash
+    npm i
+    ```
+
+5. Install PM2 to manage the application:
+    ```bash
+    npm install -g pm2
+    ```
+
+6. Start the application using PM2:
+    ```bash
+    pm2 start dist/main.js --name crypto-buddy
+    ```
+
+7. PM2 commands:
+    ```bash
+    pm2 stop all
+    pm2 restart all
+    pm2 logs
+    pm2 flush
+    ```
+
+## 📁 Project Setup
+
+1. Navigate to the project folder:
+    ```bash
+    cd Crypto-Buddy-Backend/
+    ```
+
+2. Install project dependencies:
+    ```bash
+    npm install
+    ```
+
+3. Run database migrations:
+    ```bash
+    npm run migrate
+    ```
+
+4. Start development server:
+    ```bash
+    npm run dev
+    ```
+
+## 🛠 Sequelize CLI
+
+1. Install Sequelize CLI:
+    ```bash
+    npm install --save-dev sequelize-cli
+    ```
+
+2. Initialize Sequelize CLI:
+    ```bash
+    npx sequelize-cli init
+    ```
+
+3. Run migrations:
+    ```bash
+    npx sequelize-cli db:migrate
+    ```
+
+4. Undo migrations:
+    ```bash
+    npx sequelize-cli db:migrate:undo:all
+    ```
+
+5. Run specific migrations with custom config:
+    ```bash
+    npx sequelize-cli db:migrate --config sequelize-cli-config.js
+    ```
+
+## 🌍 NGINX & HTTPS (Certbot)
+
+1. Create NGINX config for your app:
+    ```bash
+    sudo nano /etc/nginx/sites-available/cryptobuddyapp
+    ```
+
+2. Enable the site:
+    ```bash
+    sudo ln -s /etc/nginx/sites-available/cryptobuddyapp /etc/nginx/sites-enabled/
+    ```
+
+3. Test NGINX configuration:
+    ```bash
+    sudo nginx -t
+    ```
+
+4. Restart NGINX:
+    ```bash
+    sudo systemctl restart nginx
+    ```
+
+5. Set up HTTPS using Certbot:
+    ```bash
+    sudo certbot --nginx -d cryptobuddyapp.com -d www.cryptobuddyapp.com
+    ```
+
+6. Test Certbot renewal:
+    ```bash
+    sudo certbot renew --dry-run
+    ```
+
+## 📄 HTML Hosting
+
+1. Create HTML directory:
+    ```bash
+    sudo mkdir -p /var/www/cryptobuddyapp/html
+    ```
+
+2. Add HTML files:
+    ```bash
+    sudo nano /var/www/cryptobuddyapp/html/index.html
+    sudo nano /var/www/cryptobuddyapp/html/privacy-policy.html
+    ```
+
+3. Set appropriate permissions:
+    ```bash
+    sudo chmod -R 755 /var/www/cryptobuddyapp
+    ```
+
+## 🔁 WebSocket Testing
+
+1. Install WebSocket client:
+    ```bash
+    npm install -g wscat
+    ```
+
+2. Test WebSocket connection:
+    ```bash
+    wscat -c wss://cryptobuddyapp.com/socket.io/?EIO=4&transport=websocket
+    ```
+
+---
+
+### Happy Coding! 🎉
+
+For more information, check out the official documentation or reach out to the project maintainers.
