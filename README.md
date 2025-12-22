@@ -1,6 +1,6 @@
 # Backend Setup Guide
 
-This guide will walk you through the process of setting up the CryptoBuddy backend on a server. It includes system setup, Docker & PostgreSQL setup, Node.js and NPM configuration, project setup, and more.
+This guide will walk you through the process of setting up the backend App on a server. It includes system setup, Docker & PostgreSQL setup, Node.js and NPM configuration, project setup, and more.
 
 ## 🔧 System Setup
 
