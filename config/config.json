@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "nestjs-boilerplate",
+    "password": "nestjs-boilerplate",
+    "database": "nestjs-boilerplate",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "test": {
+    "username": "nestjs-boilerplate",
+    "password": "nestjs-boilerplate",
+    "database": "nestjs-boilerplate",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "production": {
+    "username": "nestjs-boilerplate",
+    "password": "nestjs-boilerplate",
+    "database": "nestjs-boilerplate",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  }
+}

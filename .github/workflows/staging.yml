@@ -22,16 +22,4 @@ jobs:
           host: ${{ secrets.STAGING_SERVER }}
           user: ${{ secrets.STAGING_USER }}
           key: ${{ secrets.STAGING_PRIVATE_KEY }}
-          command: bash -i -c 'cd /home/ubuntu/nestjs-postgres-boilerplate-backend && git checkout package-lock.json && git pull && npm i && npm run migrate && npm run build && pm2 restart all'
-
-      - name: Notify on slack
-        id: slack
-        uses: slackapi/slack-github-action@v1.25.0
-        with:
-          payload: |
-            {
-              "text": "${{ github.event.repository.name }} on staging was ${{ steps.deploy.outcome == 'success' && '✅' || '❌' }}"
-            }
-        env:
-          SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+          command: bash -i -c 'cd /home/ubuntu/Project-Backend && git checkout package-lock.json && git pull && npm i && npm run migrate && npm run build && pm2 restart all'
